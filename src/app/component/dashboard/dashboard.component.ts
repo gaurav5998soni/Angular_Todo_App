@@ -25,33 +25,45 @@ export class DashboardComponent implements OnInit{
   }
 
   getAllTask(){
-    this.crudService.getAllTasks().subscribe(res => {
-      this.taskArr = res;
-    }, err=> alert('aleart while fetching tasks'));
-    
+    this.crudService.getAllTasks().subscribe({
+      next: res => {
+        this.taskArr = res;
+      },
+      error: err=> alert('aleart while fetching tasks')
+    });
   }
 
   addTask() {
     this.taskObj.task_message = this.addTaskValue;
-    this.crudService.addTask(this.taskObj).subscribe(res=>{
-      this.ngOnInit();
-      this.addTaskValue='';
-    }, err=> alert(err))
+    this.crudService.addTask(this.taskObj).subscribe({
+      next: res=> {
+        this.ngOnInit();
+        this.addTaskValue='';
+    }, 
+    error: err=> alert(err)
+  });
   }
 
   deleteTask(task: Task) {
-    this.crudService.deleteTask(task).subscribe(res=>{
-      console.log(res);
-      this.ngOnInit();
-    }, err=> alert("unable to delete task"));
+    this.crudService.deleteTask(task).subscribe({
+      next: res=>{
+        console.log(res);
+        this.ngOnInit();
+    },
+    error: err=> alert("unable to delete task")
+  });
   }
 
   updateTask() {
     this.taskObj.task_message= this.editTaskValue;
-    this.crudService.editTask(this.taskObj).subscribe(res=> {
-      console.log("Task updated");
-      this.ngOnInit();
-    }, err=> alert("task can't be updated"));
+    this.crudService.editTask(this.taskObj).subscribe({
+      next: res=> {
+        console.log("Task updated");
+        this.ngOnInit();
+      },
+      error: err=> alert("task can't be updated")
+    });
+
   }
 
   editButton(task: Task){
